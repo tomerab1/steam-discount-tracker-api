@@ -27,6 +27,7 @@ import { PersistGameInfoModule } from './persist-game-info/persist-game-info.mod
         BASE_URL: Joi.string().required(),
         BASE_FETCH_URL: Joi.string().required(),
         BASE_INFO_URL: Joi.string().required(),
+        PQUEUE_CONCURRENCY: Joi.number().required(),
         PORT: Joi.number().default(3000),
         DB_MAX_RETRY: Joi.number().optional(),
       }),

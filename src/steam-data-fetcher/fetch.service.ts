@@ -6,7 +6,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
 import { EVENT_GAME_INFO_FETCHED } from './constants';
-import { SteamFetchResponse } from './payloads/steam-fetch-response.payload';
+import { SteamGamesInfo } from './payloads/steam-games-info.payload';
 
 @Injectable()
 export class FetchService {
@@ -32,7 +32,7 @@ export class FetchService {
 
       this.eventEmitter.emit(
         EVENT_GAME_INFO_FETCHED,
-        applist as SteamFetchResponse,
+        applist as SteamGamesInfo,
       );
     } catch (error) {
       if (error instanceof AxiosError) {

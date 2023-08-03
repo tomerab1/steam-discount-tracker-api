@@ -10,14 +10,12 @@ import { GameInfoEntity } from './entities/game-info.entity';
 import { Repository } from 'typeorm';
 import { SteamGameInfo } from 'src/steam-data-fetcher/payloads/steam-app.payload';
 import { EMPTY_STRING } from 'src/common/constants';
-import PQueue from 'p-queue';
 
 @Injectable()
 export class PersistService {
   constructor(
     @InjectRepository(GameInfoEntity)
     private readonly gameInfoRepo: Repository<GameInfoEntity>,
-    private readonly taskQueue: PQueue,
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
@@ -29,14 +27,21 @@ export class PersistService {
       if (info.name !== EMPTY_STRING) {
         const task = async () => {
           try {
-            const gameInfoEntity = await this.gameInfoRepo.preload({ ...info });
-            await this.gameInfoRepo.save(gameInfoEntity);
+            const doesExists = await this.gameInfoRepo.findOne({
+              where: { appid: info.appid },
+            });
+            if (!doesExists) {
+              const gameInfoEntity = await this.gameInfoRepo.create({
+                ...info,
+              });
+              await this.gameInfoRepo.save(gameInfoEntity);
+            }
           } catch (error) {
             console.log(error);
           }
         };
 
-        savedTasks.push(this.taskQueue.add(task));
+        savedTasks.push(task());
       }
     });
 
@@ -46,6 +51,6 @@ export class PersistService {
 
   @OnEvent(EVENT_GAME_INFO_PERSISTED)
   persistPrices() {
-    throw new Error('Not implemented');
+    console.log('all data was persisted successfuly');
   }
 }

@@ -6,5 +6,6 @@ import { PersistService } from './persist.service';
 @Module({
   imports: [TypeOrmModule.forFeature([GameInfoEntity])],
   providers: [PersistService],
+  exports: [PersistService],
 })
 export class PersistGameInfoModule {}

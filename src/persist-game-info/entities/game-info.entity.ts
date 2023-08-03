@@ -9,6 +9,6 @@ export class GameInfoEntity {
   @Column()
   readonly name: string;
 
-  @Column()
+  @Column({ unique: true })
   readonly appid: number;
 }

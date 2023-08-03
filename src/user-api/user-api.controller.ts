@@ -1,11 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { UserApiService } from './user-api.service';
 import { CreateUserApiDto } from './dto/create-user-api.dto';
 import { UpdateUserApiDto } from './dto/update-user-api.dto';
+import { PersistService } from 'src/persist-game-info/persist.service';
 
 @Controller('user-api')
 export class UserApiController {
-  constructor(private readonly userApiService: UserApiService) {}
+  constructor(
+    private readonly userApiService: UserApiService,
+    private persist: PersistService,
+  ) {}
 
   @Post()
   create(@Body() createUserApiDto: CreateUserApiDto) {
@@ -13,8 +26,9 @@ export class UserApiController {
   }
 
   @Get()
-  findAll() {
-    return this.userApiService.findAll();
+  findAll(@Query('name') name: string) {
+    return this.persist.findGameInfo(name);
+    //return this.userApiService.findAll();
   }
 
   @Get(':id')

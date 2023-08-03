@@ -16,7 +16,7 @@ export class FetchService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @Cron(CronExpression.EVERY_5_MINUTES)
+  @Cron(CronExpression.EVERY_MINUTE)
   async fetchData(): Promise<void> {
     try {
       Logger.debug(
@@ -24,10 +24,13 @@ export class FetchService {
           'BASE_FETCH_URL',
         )}`,
       );
-      const data$ = this.httpService.get(
+
+      const responseStream$ = this.httpService.get(
         this.configService.get<string>('BASE_FETCH_URL'),
       );
-      const { data } = await firstValueFrom(data$);
+
+      const responseStream = await firstValueFrom(responseStream$);
+      const { data } = responseStream;
       const { applist } = data;
 
       this.eventEmitter.emit(

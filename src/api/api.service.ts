@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PersistService } from 'src/persist-game-info/persist.service';
+import { PersistService } from 'src/internal/persist-game-info/persist.service';
 import { ApiQueryDto } from './dto/api-query.dto';
 
 @Injectable()

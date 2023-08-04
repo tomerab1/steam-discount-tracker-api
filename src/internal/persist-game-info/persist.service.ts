@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EVENT_GAME_INFO_FETCHED } from 'src/steam-data-fetcher/constants';
-import { SteamGamesInfo } from 'src/steam-data-fetcher/payloads/steam-games-info.payload';
+import { EVENT_GAME_INFO_FETCHED } from 'src/internal/steam-data-fetcher/constants';
+import { SteamGamesInfo } from 'src/internal/steam-data-fetcher/payloads/steam-games-info.payload';
 import { GameInfoEntity } from './entities/game-info.entity';
 import { Repository } from 'typeorm';
-import { SteamGameInfo } from 'src/steam-data-fetcher/payloads/steam-app.payload';
-import { EMPTY_STRING } from 'src/common/constants';
-import { Like } from 'typeorm';
+import { SteamGameInfo } from 'src/internal/steam-data-fetcher/payloads/steam-app.payload';
+import { EMPTY_STRING } from 'src/internal/common/constants';
 import { BATCH_SIZE } from './constants';
 import { ApiQueryDto } from 'src/api/dto/api-query.dto';
 
@@ -22,20 +21,15 @@ export class PersistService {
   ) {}
 
   async findGameInfo(apiQueryDto: ApiQueryDto): Promise<GameInfoEntity[]> {
-    const { name, matchOpt } = apiQueryDto;
-    let gameInfo;
-
-    if (matchOpt === undefined) {
-      gameInfo = await this.gameInfoRepo.find({ where: { name } });
-    } else {
-      gameInfo = await this.gameInfoRepo.find({
-        where: { name: Like(`%${name.toLowerCase()}%`) },
-      });
-    }
+    const { name } = apiQueryDto;
+    const gameInfo = await this.gameInfoRepo.find({
+      where: { name },
+    });
 
     if (!gameInfo) {
       throw new NotFoundException(`Cannot find game with name: ${name}`);
     }
+
     return gameInfo;
   }
 
@@ -43,7 +37,7 @@ export class PersistService {
   private async persistData(payload: SteamGamesInfo) {
     payload.apps.forEach(async (info: SteamGameInfo) => {
       if (info.name !== EMPTY_STRING) {
-        Object.assign(info, { name: info.name.trim().toLowerCase() });
+        Object.assign(info, { name: info.name.trim() });
         this.batch.push(info);
 
         if (this.batch.length >= BATCH_SIZE && !this.isProcessing) {

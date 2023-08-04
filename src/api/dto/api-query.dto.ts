@@ -1,15 +1,7 @@
-import { IsIn, IsOptional, IsString } from 'class-validator';
-
-type MatchOptions = 'like' | 'exact';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class ApiQueryDto {
   @IsString()
+  @IsNotEmpty()
   readonly name: string;
-
-  @IsString()
-  @IsIn(['like', 'exact'], {
-    message: 'matchOpt must be either "like" or "exact"',
-  })
-  @IsOptional({})
-  readonly matchOpt: MatchOptions = 'exact';
 }

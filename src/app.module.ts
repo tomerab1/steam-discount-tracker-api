@@ -1,13 +1,13 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './database/database.module';
-import { SteamDataFetcherModule } from './steam-data-fetcher/steam-data-fetcher.module';
+import { DatabaseModule } from './internal/database/database.module';
+import { SteamDataFetcherModule } from './internal/steam-data-fetcher/steam-data-fetcher.module';
 import { UserApiModule } from './api/api.module';
 import * as Joi from 'joi';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { PersistGameInfoModule } from './persist-game-info/persist-game-info.module';
+import { PersistGameInfoModule } from './internal/persist-game-info/persist-game-info.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { PersistGameInfoModule } from './persist-game-info/persist-game-info.mod
         POSTGRES_DB: Joi.string().required(),
         BASE_URL: Joi.string().required(),
         BASE_FETCH_URL: Joi.string().required(),
-        BASE_INFO_URL: Joi.string().required(),
+        BASE_DISCOUNTS_URL: Joi.string().required(),
         PQUEUE_CONCURRENCY: Joi.number().required(),
         PORT: Joi.number().default(3000),
         DB_MAX_RETRY: Joi.number().optional(),

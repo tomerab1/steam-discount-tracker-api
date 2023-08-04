@@ -16,7 +16,7 @@ export class FetchService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async fetchData(): Promise<void> {
     try {
       Logger.debug(

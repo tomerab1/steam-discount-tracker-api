@@ -9,24 +9,30 @@ import { SteamGameInfo } from 'src/steam-data-fetcher/payloads/steam-app.payload
 import { EMPTY_STRING } from 'src/common/constants';
 import { Like } from 'typeorm';
 import { BATCH_SIZE } from './constants';
+import { ApiQueryDto } from 'src/api/dto/api-query.dto';
 
 @Injectable()
 export class PersistService {
-  private readonly batch: Partial<GameInfoEntity>[];
-  private isProcessing: boolean;
+  private readonly batch: Partial<GameInfoEntity>[] = [];
+  private isProcessing = false;
 
   constructor(
     @InjectRepository(GameInfoEntity)
     private readonly gameInfoRepo: Repository<GameInfoEntity>,
-  ) {
-    this.batch = [];
-    this.isProcessing = false;
-  }
+  ) {}
 
-  async findGameInfo(name: string): Promise<GameInfoEntity[]> {
-    const gameInfo = await this.gameInfoRepo.find({
-      where: { name: Like(`%${name.toLowerCase()}%`) },
-    });
+  async findGameInfo(apiQueryDto: ApiQueryDto): Promise<GameInfoEntity[]> {
+    const { name, matchOpt } = apiQueryDto;
+    let gameInfo;
+
+    if (matchOpt === undefined) {
+      gameInfo = await this.gameInfoRepo.find({ where: { name } });
+    } else {
+      gameInfo = await this.gameInfoRepo.find({
+        where: { name: Like(`%${name.toLowerCase()}%`) },
+      });
+    }
+
     if (!gameInfo) {
       throw new NotFoundException(`Cannot find game with name: ${name}`);
     }

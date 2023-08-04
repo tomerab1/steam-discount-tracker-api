@@ -30,6 +30,8 @@
     "@nestjs/schedule": "^3.0.1",
     "@nestjs/typeorm": "^10.0.0",
     "axios": "^1.4.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "cron": "^2.4.0",
     "joi": "^17.9.2",
     "p-queue": "^7.3.4",

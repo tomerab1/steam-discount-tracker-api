@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { SteamDataFetcherModule } from './steam-data-fetcher/steam-data-fetcher.module';
-import { UserApiModule } from './user-api/user-api.module';
+import { UserApiModule } from './api/api.module';
 import * as Joi from 'joi';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';

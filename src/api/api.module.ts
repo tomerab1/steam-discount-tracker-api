@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { UserApiService } from './user-api.service';
-import { UserApiController } from './user-api.controller';
+import { ApiService } from './api.service';
+import { ApiController } from './api.controller';
 import { PersistGameInfoModule } from 'src/persist-game-info/persist-game-info.module';
 
 @Module({
-  controllers: [UserApiController],
-  providers: [UserApiService],
+  controllers: [ApiController],
+  providers: [ApiService],
   imports: [PersistGameInfoModule],
 })
 export class UserApiModule {}

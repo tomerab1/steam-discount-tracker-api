@@ -3,14 +3,14 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { AxiosError, AxiosResponse } from 'axios';
-import { first, firstValueFrom } from 'rxjs';
+import { AxiosError } from 'axios';
+import { firstValueFrom } from 'rxjs';
 import {
   EVENT_DISCOUNTS_INFO_FETCHED,
   EVENT_GAME_INFO_FETCHED,
 } from './constants';
-import { SteamGamesInfo } from './payloads/steam-games-info.payload';
-import { spec } from 'node:test/reporters';
+import { SteamGamesInfo } from './dto/steam-games-info.dto';
+import { SteamDiscountsDto } from './dto/steam-discounts.dto';
 
 @Injectable()
 export class FetchService {
@@ -28,12 +28,10 @@ export class FetchService {
         (res: any) => {
           const { specials } = res.data;
 
-          console.log(specials);
-
-          // this.eventEmitter.emit(
-          //   EVENT_DISCOUNTS_INFO_FETCHED,
-          //   applist as SteamGamesInfo,
-          // );
+          this.eventEmitter.emit(
+            EVENT_DISCOUNTS_INFO_FETCHED,
+            specials as SteamDiscountsDto,
+          );
         },
       );
     } catch (error) {
@@ -62,7 +60,7 @@ export class FetchService {
     }
   }
 
-  private async fetchData<T>(url: string, extractDataCb: (res: any) => void) {
+  private async fetchData(url: string, extractDataCb: (res: any) => void) {
     Logger.debug(`Started fetching data from: ${url}`);
     const responseStream$ = this.httpService.get(url);
     const responseStream = await firstValueFrom(responseStream$);

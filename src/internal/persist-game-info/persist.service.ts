@@ -1,14 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EVENT_GAME_INFO_FETCHED } from 'src/internal/steam-data-fetcher/constants';
-import { SteamGamesInfo } from 'src/internal/steam-data-fetcher/payloads/steam-games-info.payload';
+import {
+  EVENT_DISCOUNTS_INFO_FETCHED,
+  EVENT_GAME_INFO_FETCHED,
+} from 'src/internal/steam-data-fetcher/constants';
+import { SteamGamesInfo } from 'src/internal/steam-data-fetcher/dto/steam-games-info.dto';
 import { GameInfoEntity } from './entities/game-info.entity';
 import { Repository } from 'typeorm';
-import { SteamGameInfo } from 'src/internal/steam-data-fetcher/payloads/steam-app.payload';
+import { SteamGameInfo } from 'src/internal/steam-data-fetcher/dto/steam-app.dto';
 import { EMPTY_STRING } from 'src/internal/common/constants';
 import { BATCH_SIZE } from './constants';
 import { ApiQueryDto } from 'src/api/dto/api-query.dto';
+import { SteamDiscountsDto } from '../steam-data-fetcher/dto/steam-discounts.dto';
 
 @Injectable()
 export class PersistService {
@@ -31,6 +35,11 @@ export class PersistService {
     }
 
     return gameInfo;
+  }
+
+  @OnEvent(EVENT_DISCOUNTS_INFO_FETCHED, { async: true, promisify: true })
+  private async persistDiscounts(payload: SteamDiscountsDto) {
+    payload.items.forEach((item) => {});
   }
 
   @OnEvent(EVENT_GAME_INFO_FETCHED, { async: true, promisify: true })

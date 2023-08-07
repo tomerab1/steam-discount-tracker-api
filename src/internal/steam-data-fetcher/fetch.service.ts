@@ -41,7 +41,7 @@ export class FetchService {
     }
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  @Cron(CronExpression.EVERY_MINUTE)
   async fetchSteamApps(): Promise<void> {
     try {
       this.fetchData(this.configService.get('BASE_FETCH_URL'), (res: any) => {

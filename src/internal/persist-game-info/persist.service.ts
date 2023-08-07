@@ -1,45 +1,55 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { InjectRepository } from '@nestjs/typeorm';
 import {
   EVENT_DISCOUNTS_INFO_FETCHED,
   EVENT_GAME_INFO_FETCHED,
 } from 'src/internal/steam-data-fetcher/constants';
 import { SteamGamesInfo } from 'src/internal/steam-data-fetcher/dto/steam-games-info.dto';
-import { GameInfoEntity } from './entities/game-info.entity';
-import { Repository } from 'typeorm';
 import { SteamGameInfo } from 'src/internal/steam-data-fetcher/dto/steam-app.dto';
 import { EMPTY_STRING } from 'src/internal/common/constants';
-import { BATCH_SIZE } from './constants';
-import { ApiQueryDto } from 'src/api/dto/api-query.dto';
+import { BATCH_SIZE, GAME_INFO_INDEX } from './constants';
 import { SteamDiscountsDto } from '../steam-data-fetcher/dto/steam-discounts.dto';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class PersistService {
-  private readonly batch: Partial<GameInfoEntity>[] = [];
+  private readonly batch: SteamGameInfo[] = [];
   private isProcessing = false;
 
-  constructor(
-    @InjectRepository(GameInfoEntity)
-    private readonly gameInfoRepo: Repository<GameInfoEntity>,
-  ) {}
+  constructor(private readonly elasticserchService: ElasticsearchService) {
+    this.createIndex();
+  }
 
-  async findGameInfo(apiQueryDto: ApiQueryDto): Promise<GameInfoEntity[]> {
-    const { name } = apiQueryDto;
-    const gameInfo = await this.gameInfoRepo.find({
-      where: { name },
-    });
+  private async createIndex() {
+    try {
+      const doesIndexExists = await this.elasticserchService.indices.exists({
+        index: GAME_INFO_INDEX,
+      });
 
-    if (!gameInfo) {
-      throw new NotFoundException(`Cannot find game with name: ${name}`);
+      if (!doesIndexExists) {
+        await this.elasticserchService.indices.create(
+          {
+            index: GAME_INFO_INDEX,
+            mappings: {
+              properties: {
+                appid: { type: 'integer' },
+                name: { type: 'text' },
+              },
+            },
+          },
+          { ignore: [HttpStatus.BAD_REQUEST] },
+        );
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
-
-    return gameInfo;
   }
 
   @OnEvent(EVENT_DISCOUNTS_INFO_FETCHED, { async: true, promisify: true })
   private async persistDiscounts(payload: SteamDiscountsDto) {
-    payload.items.forEach((item) => {});
+    //payload.items.forEach((item) => {});
+    return null;
   }
 
   @OnEvent(EVENT_GAME_INFO_FETCHED, { async: true, promisify: true })
@@ -58,6 +68,23 @@ export class PersistService {
     });
 
     await this.processRemaining();
+    console.log('done', this.batch);
+  }
+
+  private async indexData(data: SteamGameInfo[]) {
+    try {
+      const operations = data.flatMap((doc) => [
+        { index: { _index: GAME_INFO_INDEX } },
+        doc,
+      ]);
+
+      return await this.elasticserchService.bulk({
+        refresh: true,
+        operations,
+      });
+    } catch (error) {
+      throw error;
+    }
   }
 
   private async processRemaining() {
@@ -75,10 +102,7 @@ export class PersistService {
   private async processBatch() {
     try {
       const currentBatch = this.batch.splice(0, BATCH_SIZE);
-      await this.gameInfoRepo.upsert(currentBatch, {
-        conflictPaths: { appid: true },
-        skipUpdateIfNoValuesChanged: true,
-      });
+      return await this.indexData(currentBatch);
     } catch (error) {
       console.log(error);
     }

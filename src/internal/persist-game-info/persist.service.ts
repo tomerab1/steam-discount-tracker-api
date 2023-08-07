@@ -68,14 +68,13 @@ export class PersistService {
     });
 
     await this.processRemaining();
-    console.log('done', this.batch);
   }
 
   private async indexData(data: SteamGameInfo[]) {
     try {
       const operations = data.flatMap((doc) => [
-        { index: { _index: GAME_INFO_INDEX } },
-        doc,
+        { index: { _index: GAME_INFO_INDEX, _id: doc.appid } },
+        { doc, doc_as_upsert: true },
       ]);
 
       return await this.elasticserchService.bulk({

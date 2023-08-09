@@ -20,7 +20,7 @@ export class FetchService {
     private readonly eventEmitter: EventEmitter2,
   ) {}
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async fetchDiscounts(): Promise<void> {
     try {
       this.fetchData(
@@ -41,7 +41,7 @@ export class FetchService {
     }
   }
 
-  @Cron(CronExpression.EVERY_MINUTE)
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
   async fetchSteamApps(): Promise<void> {
     try {
       this.fetchData(this.configService.get('BASE_FETCH_URL'), (res: any) => {

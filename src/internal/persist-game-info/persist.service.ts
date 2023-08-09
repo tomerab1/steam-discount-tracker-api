@@ -20,6 +20,24 @@ export class PersistService {
     this.createIndex();
   }
 
+  async search(text: string) {
+    try {
+      const searchQuery = {
+        index: GAME_INFO_INDEX,
+        body: {
+          query: {
+            match: { 'doc.name': text },
+          },
+        },
+      };
+
+      return await this.elasticserchService.search(searchQuery);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   private async createIndex() {
     try {
       const doesIndexExists = await this.elasticserchService.indices.exists({

@@ -7,6 +7,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PersistGameInfoModule } from './internal/persist-game-info/persist-game-info.module';
 import { RealtimeModule } from './realtime/realtime.module';
+import { CacheModule } from './internal/cache/cache.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { RealtimeModule } from './realtime/realtime.module';
     SteamDataFetcherModule,
     PersistGameInfoModule,
     RealtimeModule,
+    CacheModule,
   ],
   controllers: [],
   providers: [],

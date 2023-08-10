@@ -10,7 +10,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { EVENT_DISCOUNTS_INFO_FETCHED } from '../steam-data-fetcher/constants';
 import { SteamDiscountsDto } from '../steam-data-fetcher/dto/steam-discounts.dto';
 import { SteamDiscountItemDto } from '../steam-data-fetcher/dto/steam-discount-item.dto';
-import { objectAssignExact } from '../common/helpers';
+import { epochToSeconds, objectAssignExact } from '../common/helpers';
 
 @Injectable()
 export class CacheService implements OnModuleDestroy, OnModuleInit {
@@ -94,7 +94,7 @@ export class CacheService implements OnModuleDestroy, OnModuleInit {
         if (currentTTL <= 0) {
           await this.redisClient.expire(
             id.toString(),
-            item.discount_expiration - Math.floor(Date.now() / 1000),
+            item.discount_expiration - epochToSeconds(),
           );
         }
       } catch (error) {

@@ -64,12 +64,6 @@ export class PersistService {
     }
   }
 
-  @OnEvent(EVENT_DISCOUNTS_INFO_FETCHED, { async: true, promisify: true })
-  private async persistDiscounts(payload: SteamDiscountsDto) {
-    //payload.items.forEach((item) => {});
-    return null;
-  }
-
   @OnEvent(EVENT_GAME_INFO_FETCHED, { async: true, promisify: true })
   private async persistData(payload: SteamGamesInfo) {
     payload.apps.forEach(async (info: SteamGameInfo) => {

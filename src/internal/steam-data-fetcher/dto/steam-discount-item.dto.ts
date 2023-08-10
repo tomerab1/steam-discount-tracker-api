@@ -1,4 +1,5 @@
 export class SteamDiscountItemDto {
+  readonly name: string;
   readonly id: number;
   readonly discount_percent: number;
   readonly original_price: number;

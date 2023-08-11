@@ -6,8 +6,11 @@ import * as Joi from 'joi';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { PersistGameInfoModule } from './internal/persist-game-info/persist-game-info.module';
-import { RealtimeModule } from './realtime/realtime.module';
 import { CacheModule } from './internal/cache/cache.module';
+import { RestModule } from './rest/rest.module';
+import { SmsModule } from './internal/sms/sms.module';
+import { EmailModule } from './internal/email/email.module';
+import { PersistUsersModule } from './internal/persist-users/persist-users.module';
 
 @Module({
   imports: [
@@ -19,6 +22,10 @@ import { CacheModule } from './internal/cache/cache.module';
         ELASTICSEARCH_USERNAME: Joi.string().required(),
         ELASTICSEARCH_PASSWORD: Joi.string().required(),
         ELASTICSEARCH_NODE: Joi.string().required(),
+        REDIS_URL: Joi.string().required(),
+        TWILIO_ACCOUNT_SID: Joi.string().required(),
+        TWILIO_AUTH_TOKEN: Joi.string().required(),
+        TWILIO_PHONE_NUM: Joi.string().required(),
         BASE_URL: Joi.string().required(),
         BASE_FETCH_URL: Joi.string().required(),
         BASE_DISCOUNTS_URL: Joi.string().required(),
@@ -29,8 +36,11 @@ import { CacheModule } from './internal/cache/cache.module';
     HttpModule,
     SteamDataFetcherModule,
     PersistGameInfoModule,
-    RealtimeModule,
     CacheModule,
+    RestModule,
+    SmsModule,
+    EmailModule,
+    PersistUsersModule,
   ],
   controllers: [],
   providers: [],

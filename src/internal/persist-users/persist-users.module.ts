@@ -6,5 +6,6 @@ import { UserEntity } from './entity/user.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity])],
   providers: [PersistUsersService],
+  exports: [PersistUsersService],
 })
 export class PersistUsersModule {}

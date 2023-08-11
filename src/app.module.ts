@@ -11,6 +11,7 @@ import { RestModule } from './rest/rest.module';
 import { SmsModule } from './internal/sms/sms.module';
 import { EmailModule } from './internal/email/email.module';
 import { PersistUsersModule } from './internal/persist-users/persist-users.module';
+import { EncryptModule } from './internal/encrypt/encrypt.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PersistUsersModule } from './internal/persist-users/persist-users.modul
         BASE_URL: Joi.string().required(),
         BASE_FETCH_URL: Joi.string().required(),
         BASE_DISCOUNTS_URL: Joi.string().required(),
+        SECRET_KEY: Joi.string().required(),
         PORT: Joi.number().default(3000),
         DB_MAX_RETRY: Joi.number().optional(),
       }),
@@ -41,6 +43,7 @@ import { PersistUsersModule } from './internal/persist-users/persist-users.modul
     SmsModule,
     EmailModule,
     PersistUsersModule,
+    EncryptModule,
   ],
   controllers: [],
   providers: [],

@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.9.0",
+    "@golevelup/ts-jest": "^0.4.0",
     "@nestjs/axios": "^3.0.0",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",

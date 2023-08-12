@@ -1,13 +1,17 @@
+import { Exclude, Expose } from 'class-transformer';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
+@Expose()
 export class UserEntity {
   @PrimaryColumn({ type: 'uuid' })
   readonly id: string;
 
+  @Exclude()
   @Column({ unique: true })
   readonly email: string;
 
+  @Exclude()
   @Column({ unique: true })
   readonly phoneNumber: string;
 

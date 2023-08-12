@@ -1,6 +1,8 @@
 import {
   Inject,
   Injectable,
+  InternalServerErrorException,
+  Logger,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
@@ -14,8 +16,6 @@ import { epochToSeconds, objectAssignExact } from '../common/helpers';
 
 @Injectable()
 export class CacheService implements OnModuleDestroy, OnModuleInit {
-  private m_isConnected = false;
-
   constructor(
     @Inject(REDIS_CLIENT)
     private readonly redisClient: RedisClientType,
@@ -24,10 +24,9 @@ export class CacheService implements OnModuleDestroy, OnModuleInit {
   async onModuleInit() {
     try {
       await this.redisClient.connect();
-      this.m_isConnected = true;
     } catch (error) {
-      console.log(error);
-      throw error;
+      Logger.error(error);
+      throw new InternalServerErrorException();
     }
   }
 
@@ -35,29 +34,9 @@ export class CacheService implements OnModuleDestroy, OnModuleInit {
     try {
       await this.redisClient.flushAll();
       await this.redisClient.disconnect();
-      this.m_isConnected = false;
     } catch (error) {
-      throw error;
-    }
-  }
-
-  isConnected(): boolean {
-    return this.m_isConnected;
-  }
-
-  async set(key: string, value: string) {
-    try {
-      await this.redisClient.set(key, value);
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async del(key: string) {
-    try {
-      await this.redisClient.del(key);
-    } catch (error) {
-      throw error;
+      Logger.error(error);
+      throw new InternalServerErrorException();
     }
   }
 
@@ -98,8 +77,8 @@ export class CacheService implements OnModuleDestroy, OnModuleInit {
           );
         }
       } catch (error) {
-        console.log(error);
-        throw error;
+        Logger.error(error);
+        throw new InternalServerErrorException();
       }
     });
   }

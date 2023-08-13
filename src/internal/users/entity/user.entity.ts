@@ -15,6 +15,10 @@ export class UserEntity {
   readonly email: string;
 
   @Exclude()
+  @Column()
+  readonly password: string;
+
+  @Exclude()
   @Column({ unique: true })
   readonly phoneNumber: string;
 

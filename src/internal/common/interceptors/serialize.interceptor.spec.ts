@@ -3,7 +3,7 @@ import * as crypto from 'crypto';
 import { lastValueFrom, of } from 'rxjs';
 import { createMock } from '@golevelup/ts-jest';
 import { CallHandler, ExecutionContext } from '@nestjs/common';
-import { UserEntity } from '../../persist-users/entity/user.entity';
+import { UserEntity } from '../../users/entity/user.entity';
 
 describe('SerializeInterceptor', () => {
   it('should be defined', () => {

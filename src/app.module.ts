@@ -10,8 +10,7 @@ import { CacheModule } from './internal/cache/cache.module';
 import { RestModule } from './rest/rest.module';
 import { SmsModule } from './internal/sms/sms.module';
 import { EmailModule } from './internal/email/email.module';
-import { PersistUsersModule } from './internal/persist-users/persist-users.module';
-import { EncryptModule } from './internal/iam/encrypt/encrypt.module';
+import { UsersModule } from './internal/users/users.module';
 import { IamModule } from './internal/iam/iam.module';
 
 @Module({
@@ -43,8 +42,7 @@ import { IamModule } from './internal/iam/iam.module';
     RestModule,
     SmsModule,
     EmailModule,
-    PersistUsersModule,
-    EncryptModule,
+    UsersModule,
     IamModule,
   ],
   controllers: [],

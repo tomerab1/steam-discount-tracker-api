@@ -9,6 +9,8 @@ export class EncryptService {
   constructor(private readonly configService: ConfigService) {}
 
   encrypt(text: string) {
+    if (!text) return null;
+
     const iv = crypto.randomBytes(16);
     const cipher = crypto.createCipheriv(
       this.algo,
@@ -24,6 +26,8 @@ export class EncryptService {
   }
 
   decrypt(text: string) {
+    if (!text) return null;
+
     const [authTag, iv, encrypted] = text.split('|');
     const decipher = crypto.createDecipheriv(
       this.algo,

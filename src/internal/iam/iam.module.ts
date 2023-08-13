@@ -8,12 +8,11 @@ import { HashService } from './hash/hash.service';
 import { EncryptService } from './encrypt/encrypt.service';
 
 @Module({
-  providers: [AuthService, HashService],
+  providers: [AuthService, HashService, EncryptService],
   imports: [
     UsersModule,
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
   ],
-  exports: [HashService, EncryptService],
 })
 export class IamModule {}

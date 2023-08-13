@@ -12,6 +12,7 @@ import { SmsModule } from './internal/sms/sms.module';
 import { EmailModule } from './internal/email/email.module';
 import { UsersModule } from './internal/users/users.module';
 import { IamModule } from './internal/iam/iam.module';
+import { DatabaseModule } from './internal/database/database.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { IamModule } from './internal/iam/iam.module';
     EmailModule,
     UsersModule,
     IamModule,
+    DatabaseModule,
   ],
   controllers: [],
   providers: [],

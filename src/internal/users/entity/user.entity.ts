@@ -22,6 +22,6 @@ export class UserEntity {
   @Column({ unique: true })
   readonly phoneNumber: string;
 
-  @Column()
+  @Column('text', { array: true })
   readonly games: string[];
 }

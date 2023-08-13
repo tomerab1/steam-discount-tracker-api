@@ -6,6 +6,8 @@ import jwtConfig from './config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
 import { HashService } from './hash/hash.service';
 import { EncryptService } from './encrypt/encrypt.service';
+import { PassportModule } from '@nestjs/passport';
+import { AuthController } from './auth/auth.controller';
 
 @Module({
   providers: [AuthService, HashService, EncryptService],
@@ -13,6 +15,8 @@ import { EncryptService } from './encrypt/encrypt.service';
     UsersModule,
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
+    PassportModule,
   ],
+  controllers: [AuthController],
 })
 export class IamModule {}

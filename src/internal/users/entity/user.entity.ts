@@ -1,14 +1,11 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @Expose()
 export class UserEntity {
-  @PrimaryColumn({ type: 'uuid' })
+  @PrimaryGeneratedColumn('uuid')
   readonly id: string;
-
-  @Column({ unique: true })
-  readonly username: string;
 
   @Exclude()
   @Column({ unique: true })

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PersistUsersService } from './persist-users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './entity/user.entity';
-import { EncryptModule } from '../encrypt/encrypt.module';
+import { EncryptModule } from '../iam/encrypt/encrypt.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity]), EncryptModule],

@@ -7,6 +7,9 @@ export class UserEntity {
   @PrimaryColumn({ type: 'uuid' })
   readonly id: string;
 
+  @Column({ unique: true })
+  readonly username: string;
+
   @Exclude()
   @Column({ unique: true })
   readonly email: string;

@@ -8,7 +8,7 @@ import { UserEntity } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { EncryptService } from '../encrypt/encrypt.service';
+import { EncryptService } from '../iam/encrypt/encrypt.service';
 import { PostgresError } from '../common/postgresErrors.enum';
 
 @Injectable()

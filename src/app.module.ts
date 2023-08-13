@@ -11,7 +11,8 @@ import { RestModule } from './rest/rest.module';
 import { SmsModule } from './internal/sms/sms.module';
 import { EmailModule } from './internal/email/email.module';
 import { PersistUsersModule } from './internal/persist-users/persist-users.module';
-import { EncryptModule } from './internal/encrypt/encrypt.module';
+import { EncryptModule } from './internal/iam/encrypt/encrypt.module';
+import { IamModule } from './internal/iam/iam.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { EncryptModule } from './internal/encrypt/encrypt.module';
     EmailModule,
     PersistUsersModule,
     EncryptModule,
+    IamModule,
   ],
   controllers: [],
   providers: [],

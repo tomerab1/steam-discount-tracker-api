@@ -1,73 +1,54 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+### Real-Time Discount Notification System (API)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This API, crafted with NestJS, provides real-time notifications on Steam game discounts. Users can register, select from the entire Steam game lineup, and receive immediate discount alerts via email or SMS.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+#### Features:
 
-## Description
+- **User Registration**: Sign up and manage profiles.
+- **Game Selection**: Access all games on the Steam store.
+- **Real-time Notifications**: Get instant discount alerts through email or SMS.
+- **Integration with Steam API**: Seamless game data retrieval.
+- **Advanced Search**: Elasticsearch-backed game search, ensuring accurate results mirroring the Steam store.
+- **Scalability**: Designed for high performance and scalability.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+#### Technologies Used:
 
-## Installation
+- **Backend**: NestJS
+- **Database**: PostgreSQL (user persistence), Elasticsearch (game storage and search)
+- **Caching**: Redis (for current discounts)
+- **Email Notifications**: Nodemailer
+- **SMS Notifications**: Twilio
 
-```bash
-$ npm install
-```
+#### Setup:
 
-## Running the app
+1. **Prerequisites**:
+
+   - Node.js and npm
+   - Elasticsearch
+   - Redis
+   - Docker (optional)
+
+2. **Installation**:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone <repository-url>
+cd <repository-directory>
+npm install
 ```
 
-## Test
+3. **Environment Configuration**: Ensure the necessary environment variables or configuration files are set up.
+
+4. **Running**:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run start
 ```
 
-## Support
+#### Directory Overview:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- `rest`: Manages the RESTful API logic.
+- `internal`: Encompasses diverse modules and utilities, such as user management, Steam data fetching, SMS/email notifications, and more.
+- `main.ts`: Entry point of the application.
+- `app.module.ts`: Central module integrating all functionalities.
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+For further details and nuanced configurations, delve into the codebase and associated documentation.

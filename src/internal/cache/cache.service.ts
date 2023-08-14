@@ -52,30 +52,38 @@ export class CacheService implements OnModuleDestroy, OnModuleInit {
     } satisfies SteamDiscountItemDto;
   }
 
+  private async setJson(item: SteamDiscountItemDto) {
+    const { id } = item;
+    const toCache = objectAssignExact(this.getEmptyCacheObj(), item);
+
+    await this.redisClient.json.set(
+      id.toString(),
+      REDIS_JSON_ROOT,
+      JSON.stringify(toCache),
+      {
+        NX: true,
+      },
+    );
+  }
+
+  private async setExpiration(item: SteamDiscountItemDto) {
+    const { id } = item;
+    const currentTTL: number = await this.redisClient.ttl(id.toString());
+
+    if (currentTTL <= 0) {
+      await this.redisClient.expire(
+        id.toString(),
+        item.discount_expiration - epochToSeconds(),
+      );
+    }
+  }
+
   @OnEvent(EVENT_DISCOUNTS_INFO_FETCHED, { async: true, promisify: true })
   private persistDiscounts(payload: SteamDiscountsDto) {
     payload.items.forEach(async (item: SteamDiscountItemDto) => {
       try {
-        const { id } = item;
-        const toCache = objectAssignExact(this.getEmptyCacheObj(), item);
-
-        await this.redisClient.json.set(
-          id.toString(),
-          REDIS_JSON_ROOT,
-          JSON.stringify(toCache),
-          {
-            NX: true,
-          },
-        );
-
-        const currentTTL: number = await this.redisClient.ttl(id.toString());
-
-        if (currentTTL <= 0) {
-          await this.redisClient.expire(
-            id.toString(),
-            item.discount_expiration - epochToSeconds(),
-          );
-        }
+        await this.setJson(item);
+        await this.setExpiration(item);
       } catch (error) {
         Logger.error(error);
         throw new InternalServerErrorException();

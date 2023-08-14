@@ -18,7 +18,4 @@ export class CreateUserDto {
   @IsPhoneNumber()
   @IsOptional()
   readonly phoneNumber: string;
-
-  @IsArray({ each: true })
-  readonly games: string[];
 }

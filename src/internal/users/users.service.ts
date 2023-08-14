@@ -18,8 +18,17 @@ export class UsersService {
     private readonly usersRepository: Repository<UserEntity>,
   ) {}
 
+  async find() {
+    return await this.usersRepository.find({
+      relations: { games: true },
+    });
+  }
+
   async findOne(id: string) {
-    const user = await this.usersRepository.findOne({ where: { id } });
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: { games: true },
+    });
     if (!user) throw new NotFoundException('User was not found');
     return user;
   }

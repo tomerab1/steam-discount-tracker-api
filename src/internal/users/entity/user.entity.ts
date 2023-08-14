@@ -1,5 +1,12 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { GameEntity } from './game.entity';
 
 @Entity()
 @Expose()
@@ -19,6 +26,7 @@ export class UserEntity {
   @Column({ unique: true })
   readonly phoneNumber: string;
 
-  @Column('text', { array: true })
-  readonly games: string[];
+  @ManyToMany(() => GameEntity, (game: GameEntity) => game.users)
+  @JoinTable()
+  readonly games: GameEntity[];
 }

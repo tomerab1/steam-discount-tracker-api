@@ -17,7 +17,7 @@ describe('SerializeInterceptor', () => {
         email: 'test@gmail.com',
         phoneNumber: '+97254123123',
         games: ['call of duty: modern warfare 2', 'grand theft auto iv'],
-        username: 'test',
+        password: '12345678',
       };
       const interceptor = new SerializeInterceptor(UserEntity);
       const context = createMock<ExecutionContext>();
@@ -30,6 +30,10 @@ describe('SerializeInterceptor', () => {
 
       expect(result).not.toHaveProperty('email');
       expect(result).not.toHaveProperty('phoneNumber');
+      expect(result).not.toHaveProperty('password');
+
+      expect(result).toHaveProperty('games');
+      expect(result).toHaveProperty('id');
     });
   });
 });

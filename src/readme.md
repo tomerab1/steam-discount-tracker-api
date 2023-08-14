@@ -1,21 +1,54 @@
-# Real-Time Discount Notification System (API)
+### Real-Time Discount Notification System (API)
 
-## Description
+This API, crafted with NestJS, provides real-time notifications on Steam game discounts. Users can register, select from the entire Steam game lineup, and receive immediate discount alerts via email or SMS.
 
-This project presents a robust real-time discount alert system built using NestJS and WebSockets. The system facilitates instant notifications for client applications regarding discounts on Steam offerings. By integrating the Steam API, the system efficiently retrieves data and establishes WebSocket connections for immediate updates. The project emphasizes expertise in real-time communication, API design, event-driven architecture, and strategic scalability approaches. It also showcases the adoption of Elasticsearch within a Docker-compose environment for advanced data organization and heightened scalability.
+#### Features:
 
-## Key Features
+- **User Registration**: Sign up and manage profiles.
+- **Game Selection**: Access all games on the Steam store.
+- **Real-time Notifications**: Get instant discount alerts through email or SMS.
+- **Integration with Steam API**: Seamless game data retrieval.
+- **Advanced Search**: Elasticsearch-backed game search, ensuring accurate results mirroring the Steam store.
+- **Scalability**: Designed for high performance and scalability.
 
-- Real-time discount alerts using NestJS and WebSockets.
-- Seamless integration with the Steam API for efficient data retrieval.
-- Instantaneous updates through WebSocket connections.
-- Advanced data organization using Elasticsearch within a Docker-compose environment.
-- Proficiency in real-time communication, API design, and event-driven architecture.
+#### Technologies Used:
 
-## Technologies Used
+- **Backend**: NestJS
+- **Database**: PostgreSQL (user persistence), Elasticsearch (game storage and search)
+- **Caching**: Redis (for current discounts)
+- **Email Notifications**: Nodemailer
+- **SMS Notifications**: Twilio
 
-- NestJS
-- WebSockets
-- Steam API
-- Elasticsearch
-- Docker-compose
+#### Setup:
+
+1. **Prerequisites**:
+
+   - Node.js and npm
+   - Elasticsearch
+   - Redis
+   - Docker (optional)
+
+2. **Installation**:
+
+```bash
+git clone <repository-url>
+cd <repository-directory>
+npm install
+```
+
+3. **Environment Configuration**: Ensure the necessary environment variables or configuration files are set up.
+
+4. **Running**:
+
+```bash
+npm run start
+```
+
+#### Directory Overview:
+
+- `rest`: Manages the RESTful API logic.
+- `internal`: Encompasses diverse modules and utilities, such as user management, Steam data fetching, SMS/email notifications, and more.
+- `main.ts`: Entry point of the application.
+- `app.module.ts`: Central module integrating all functionalities.
+
+For further details and nuanced configurations, delve into the codebase and associated documentation.

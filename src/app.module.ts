@@ -1,18 +1,17 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { SteamDataFetcherModule } from './internal/steam-data-fetcher/steam-data-fetcher.module';
+import { SteamDataFetcherModule } from './steam-data-fetcher/steam-data-fetcher.module';
 import * as Joi from 'joi';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EventEmitterModule } from '@nestjs/event-emitter';
-import { PersistGameInfoModule } from './internal/persist-game-info/persist-game-info.module';
-import { CacheModule } from './internal/cache/cache.module';
-import { RestModule } from './rest/rest.module';
-import { SmsModule } from './internal/sms/sms.module';
-import { EmailModule } from './internal/email/email.module';
-import { UsersModule } from './internal/users/users.module';
-import { IamModule } from './internal/iam/iam.module';
-import { DatabaseModule } from './internal/database/database.module';
+import { PersistGameInfoModule } from './persist-game-info/persist-game-info.module';
+import { CacheModule } from './cache/cache.module';
+import { SmsModule } from './sms/sms.module';
+import { EmailModule } from './email/email.module';
+import { UsersModule } from './users/users.module';
+import { IamModule } from './iam/iam.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -40,7 +39,6 @@ import { DatabaseModule } from './internal/database/database.module';
     SteamDataFetcherModule,
     PersistGameInfoModule,
     CacheModule,
-    RestModule,
     SmsModule,
     EmailModule,
     UsersModule,

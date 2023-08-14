@@ -3,10 +3,10 @@ import { OnEvent } from '@nestjs/event-emitter';
 import {
   EVENT_DISCOUNTS_INFO_FETCHED,
   EVENT_GAME_INFO_FETCHED,
-} from 'src/internal/steam-data-fetcher/constants';
-import { SteamGamesInfo } from 'src/internal/steam-data-fetcher/dto/steam-games-info.dto';
-import { SteamGameInfo } from 'src/internal/steam-data-fetcher/dto/steam-app.dto';
-import { EMPTY_STRING } from 'src/internal/common/constants';
+} from 'src/steam-data-fetcher/constants';
+import { SteamGamesInfo } from 'src/steam-data-fetcher/dto/steam-games-info.dto';
+import { SteamGameInfo } from 'src/steam-data-fetcher/dto/steam-app.dto';
+import { EMPTY_STRING } from 'src/common/constants';
 import { BATCH_SIZE, GAME_INFO_INDEX } from './constants';
 import { SteamDiscountsDto } from '../steam-data-fetcher/dto/steam-discounts.dto';
 import { ElasticsearchService } from '@nestjs/elasticsearch';

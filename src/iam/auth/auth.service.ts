@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { UserEntity } from 'src/internal/users/entity/user.entity';
-import { UsersService } from 'src/internal/users/users.service';
+import { UserEntity } from 'src/users/entity/user.entity';
+import { UsersService } from 'src/users/users.service';
 import { HashService } from '../hash/hash.service';
 import { EncryptService } from '../encrypt/encrypt.service';
-import { CreateUserDto } from 'src/internal/users/dto/create-user.dto';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

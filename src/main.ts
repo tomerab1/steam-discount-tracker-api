@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { API_PREFIX } from './internal/common/constants';
+import { API_PREFIX } from './common/constants';
 import { ConfigService } from '@nestjs/config';
-import { SerializeInterceptor } from './internal/common/interceptors/serialize.interceptor';
-import { UserEntity } from './internal/users/entity/user.entity';
+import { SerializeInterceptor } from './common/interceptors/serialize.interceptor';
+import { UserEntity } from './users/entity/user.entity';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {

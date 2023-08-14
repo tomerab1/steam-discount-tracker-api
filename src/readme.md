@@ -44,11 +44,4 @@ npm install
 npm run start
 ```
 
-#### Directory Overview:
-
-- `rest`: Manages the RESTful API logic.
-- `internal`: Encompasses diverse modules and utilities, such as user management, Steam data fetching, SMS/email notifications, and more.
-- `main.ts`: Entry point of the application.
-- `app.module.ts`: Central module integrating all functionalities.
-
 For further details and nuanced configurations, delve into the codebase and associated documentation.

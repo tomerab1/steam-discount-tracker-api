@@ -32,7 +32,6 @@ export class CacheService implements OnModuleDestroy, OnModuleInit {
 
   async onModuleDestroy() {
     try {
-      await this.redisClient.flushAll();
       await this.redisClient.disconnect();
     } catch (error) {
       Logger.error(error);

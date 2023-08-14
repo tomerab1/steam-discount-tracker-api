@@ -13,45 +13,59 @@ export class GamesService {
     private readonly usersService: UsersService,
   ) {}
 
-  async find() {
-    return await this.gameRepository.find({ relations: { users: true } });
+  async findOne(id: string): Promise<GameEntity> {
+    const game = await this.gameRepository.findOne({
+      where: { id },
+      relations: ['users'],
+    });
+    if (!game) throw new NotFoundException(`Game with id: ${id} was not found`);
+    return game;
   }
 
-  async findOneByName(name: string) {
+  private async findOneByName(name: string): Promise<GameEntity | null> {
     const game = await this.gameRepository.findOne({
       where: { name },
-      relations: { users: true },
+      relations: ['users'],
     });
     if (!game) return null;
     return game;
   }
 
-  async createOrUpdate(id: string, createGamesDto: CreateGamesDto) {
-    const user = await this.usersService.findOne(id);
-    const createdGames = [];
+  async upsert(
+    userId: string,
+    createGamesDto: CreateGamesDto,
+  ): Promise<GameEntity[]> {
+    const user = await this.usersService.findOne(userId);
+    const createdGames: GameEntity[] = [];
 
     const work = createGamesDto.games.map(async (gameName: string) => {
-      let gameEntity = undefined;
-      const savedGame = await this.findOneByName(gameName);
+      let game = await this.findOneByName(gameName);
 
-      if (!savedGame) {
-        gameEntity = await this.gameRepository.create({
-          users: [user],
-          name: gameName,
-        });
+      if (!game) {
+        game = this.gameRepository.create({ name: gameName, users: [user] });
       } else {
-        console.log(savedGame);
-        gameEntity = await this.gameRepository.preload({
-          id: savedGame.id,
-          users: [...savedGame.users, user],
-          name: gameName,
-        });
+        if (!game.users.some((u) => u.id === user.id)) {
+          game.users.push(user);
+        }
       }
 
-      return createdGames.push(await this.gameRepository.save(gameEntity));
+      const savedGame = await this.gameRepository.save(game);
+      createdGames.push(savedGame);
     });
 
     await Promise.all(work);
     return createdGames;
+  }
+
+  async remove(userId: string, gameId: string): Promise<void> {
+    const game = await this.findOne(gameId);
+    const updatedUsers = game.users.filter((user) => user.id !== userId);
+
+    if (updatedUsers.length === 0) {
+      await this.gameRepository.remove(game);
+    } else {
+      Object.assign(game, { users: updatedUsers });
+      await this.gameRepository.save(game);
+    }
   }
 }

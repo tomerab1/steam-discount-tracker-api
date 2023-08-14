@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { GamesService } from './games.service';
 import { CreateGamesDto } from './dto/create-games.dto';
@@ -15,11 +23,6 @@ export class UsersController {
     return this.usersService.find();
   }
 
-  @Get('/games')
-  findGames() {
-    return this.gamesService.find();
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
@@ -30,11 +33,19 @@ export class UsersController {
     @Param('id') id: string,
     @Body() createGamesDto: CreateGamesDto,
   ) {
-    return this.gamesService.createOrUpdate(id, createGamesDto);
+    return this.gamesService.upsert(id, createGamesDto);
   }
 
   @Patch('/:id/games')
   updateGames(@Param('id') id: string, @Body() createGamesDto: CreateGamesDto) {
-    return this.gamesService.createOrUpdate(id, createGamesDto);
+    return this.gamesService.upsert(id, createGamesDto);
+  }
+
+  @Delete('/:userid/games/:gameid')
+  removeUserFromGame(
+    @Param('userid') userid: string,
+    @Param('gameid') gameid: string,
+  ) {
+    return this.gamesService.remove(userid, gameid);
   }
 }

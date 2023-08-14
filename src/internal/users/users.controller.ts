@@ -11,8 +11,13 @@ export class UsersController {
   ) {}
 
   @Get()
-  find() {
+  findUsers() {
     return this.usersService.find();
+  }
+
+  @Get('/games')
+  findGames() {
+    return this.gamesService.find();
   }
 
   @Get(':id')
@@ -25,11 +30,11 @@ export class UsersController {
     @Param('id') id: string,
     @Body() createGamesDto: CreateGamesDto,
   ) {
-    return this.gamesService.create(id, createGamesDto);
+    return this.gamesService.createOrUpdate(id, createGamesDto);
   }
 
   @Patch('/:id/games')
   updateGames(@Param('id') id: string, @Body() createGamesDto: CreateGamesDto) {
-    return this.gamesService.create(id, createGamesDto);
+    return this.gamesService.createOrUpdate(id, createGamesDto);
   }
 }

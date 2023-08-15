@@ -34,7 +34,6 @@ export class UsersService {
   }
 
   async findOneEmail(email: string) {
-    console.log(email);
     const user = await this.usersRepository.findOne({
       where: { hashedEmail: email },
     });

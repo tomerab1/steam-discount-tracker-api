@@ -5,6 +5,7 @@ import { HashService } from '../hash/hash.service';
 import { EncryptService } from '../encrypt/encrypt.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -33,8 +34,6 @@ export class AuthService {
       hashedEmail,
     });
 
-    console.log(user);
-
     return user;
   }
 
@@ -45,6 +44,11 @@ export class AuthService {
 
     if (user === undefined || !cmpResult) return null;
 
+    return user;
+  }
+
+  async signin(request: Request) {
+    const user = request['user'] as UserEntity;
     const accessToken = await this.jwtService.signAsync({
       sub: user.id,
       email: user.email,
@@ -53,9 +57,5 @@ export class AuthService {
     return {
       access_token: accessToken,
     };
-  }
-
-  async signin(email: string, password: string) {
-    return null;
   }
 }

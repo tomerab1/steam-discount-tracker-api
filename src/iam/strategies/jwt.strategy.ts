@@ -1,11 +1,12 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-local';
+import { Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { ExtractJwt } from 'passport-jwt';
-import { Inject } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import JwtConfig from '../config/jwt.config';
 
+@Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     @Inject(JwtConfig.KEY)
@@ -18,5 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(requset: Request) {}
+  async validate(requset: Request) {
+    return null;
+  }
 }

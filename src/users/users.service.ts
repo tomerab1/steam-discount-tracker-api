@@ -34,7 +34,10 @@ export class UsersService {
   }
 
   async findOneEmail(email: string) {
-    const user = await this.usersRepository.findOne({ where: { email } });
+    console.log(email);
+    const user = await this.usersRepository.findOne({
+      where: { hashedEmail: email },
+    });
     if (!user) throw new NotFoundException('User was not found');
     return user;
   }
@@ -47,7 +50,6 @@ export class UsersService {
 
       return await this.usersRepository.save(user);
     } catch (error) {
-      console.log(error);
       if (error?.code === PostgresError.UniqueViolation) {
         throw new ConflictException('User with this email already exists');
       }

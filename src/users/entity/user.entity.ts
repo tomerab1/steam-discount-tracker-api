@@ -19,11 +19,15 @@ export class UserEntity {
   readonly email: string;
 
   @Exclude()
+  @Column({ unique: true })
+  readonly hashedEmail: string;
+
+  @Exclude()
   @Column()
   readonly password: string;
 
   @Exclude()
-  @Column({ unique: true })
+  @Column({ unique: true, default: null })
   readonly phoneNumber: string;
 
   @ManyToMany(() => GameEntity, (game: GameEntity) => game.users)

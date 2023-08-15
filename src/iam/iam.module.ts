@@ -8,9 +8,19 @@ import { HashService } from './hash/hash.service';
 import { EncryptService } from './encrypt/encrypt.service';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth/auth.controller';
+import { LocalStrategy } from './strategies/local.strategy';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 
 @Module({
-  providers: [AuthService, HashService, EncryptService],
+  providers: [
+    AuthService,
+    HashService,
+    EncryptService,
+    LocalStrategy,
+    JwtStrategy,
+    LocalAuthGuard,
+  ],
   imports: [
     UsersModule,
     ConfigModule.forFeature(jwtConfig),

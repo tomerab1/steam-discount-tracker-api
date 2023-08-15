@@ -18,21 +18,32 @@ export class AuthService {
   async signup(createUserDto: CreateUserDto) {
     const email = this.encryptService.encrypt(createUserDto.email);
     const phoneNumber = this.encryptService.encrypt(createUserDto.phoneNumber);
-    const password = await this.hashService.hash(createUserDto.password);
+    const password = await this.hashService.hashNonDeterministic(
+      createUserDto.password,
+    );
+    const hashedEmail = await this.hashService.hashDeterministic(
+      createUserDto.email,
+    );
 
-    return await this.usersService.create({
+    const user = await this.usersService.create({
       ...createUserDto,
       email,
       phoneNumber,
       password,
+      hashedEmail,
     });
+
+    console.log(user);
+
+    return user;
   }
 
-  async signin(email: string, password: string) {
-    const user = await this.usersService.findOneEmail(email);
+  async validateUser(email: string, password: string) {
+    const hashedEmail = await this.hashService.hashDeterministic(email);
+    const user = await this.usersService.findOneEmail(hashedEmail);
     const cmpResult = await this.hashService.compare(password, user.password);
 
-    if (!user || !cmpResult) null;
+    if (user === undefined || !cmpResult) return null;
 
     const accessToken = await this.jwtService.signAsync({
       sub: user.id,
@@ -42,5 +53,9 @@ export class AuthService {
     return {
       access_token: accessToken,
     };
+  }
+
+  async signin(email: string, password: string) {
+    return null;
   }
 }

@@ -6,11 +6,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { GamesService } from './games.service';
 import { CreateGamesDto } from './dto/create-games.dto';
+import { JwtAuthGuard } from 'src/iam/auth/guards/jwt-auth.guard';
 
+@UseGuards(new JwtAuthGuard())
 @Controller('users')
 export class UsersController {
   constructor(

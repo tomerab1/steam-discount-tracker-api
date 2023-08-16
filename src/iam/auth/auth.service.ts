@@ -6,6 +6,8 @@ import { EncryptService } from '../encrypt/encrypt.service';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import jwtConfig from '../config/jwt.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +16,8 @@ export class AuthService {
     private readonly encryptService: EncryptService,
     private readonly hashService: HashService,
     private readonly jwtService: JwtService,
+    @Inject(jwtConfig.KEY)
+    private readonly JwtCofnig: ConfigType<typeof jwtConfig>,
   ) {}
 
   async signup(createUserDto: CreateUserDto) {
@@ -54,8 +58,18 @@ export class AuthService {
       email: user.email,
     });
 
-    return {
-      access_token: accessToken,
-    };
+    request.res.setHeader(
+      'Set-Cookie',
+      `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${this.JwtCofnig.accessTokenTTL}`,
+    );
+
+    return user;
+  }
+
+  async signout(request: Request) {
+    request.res.setHeader(
+      'Set-Cookie',
+      `accessToken=; HttpOnly; Path=/; Max-Age=0`,
+    );
   }
 }

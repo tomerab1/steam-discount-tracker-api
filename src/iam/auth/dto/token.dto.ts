@@ -1,3 +1,3 @@
 export class TokenDto {
-  readonly userid: string;
+  readonly sub: string;
 }

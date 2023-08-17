@@ -1,6 +1,7 @@
 import {
   IsArray,
   IsEmail,
+  IsEmpty,
   IsNotEmpty,
   IsOptional,
   IsPhoneNumber,
@@ -12,7 +13,12 @@ export class CreateUserDto {
   readonly email: string;
 
   @IsOptional()
+  @IsEmpty()
   readonly hashedEmail: string;
+
+  @IsOptional()
+  @IsEmpty()
+  readonly refreshToken: string;
 
   @IsString()
   @IsNotEmpty()

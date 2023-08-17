@@ -31,6 +31,7 @@ import { DatabaseModule } from './database/database.module';
         BASE_FETCH_URL: Joi.string().required(),
         BASE_DISCOUNTS_URL: Joi.string().required(),
         SECRET_KEY: Joi.string().required(),
+        JWT_REFRESH_JWT_TTL: Joi.number().required(),
         PORT: Joi.number().default(3000),
         DB_MAX_RETRY: Joi.number().optional(),
       }),

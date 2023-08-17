@@ -11,6 +11,8 @@ import { AuthController } from './auth/auth.controller';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalAuthGuard } from './auth/guards/local-auth.guard';
+import { JwtRefreshStrategy } from './strategies/jwt-refresh.strategy';
+import { JwtRefreshGuard } from './auth/guards/jwt-refresh.guard';
 
 @Module({
   providers: [
@@ -19,7 +21,9 @@ import { LocalAuthGuard } from './auth/guards/local-auth.guard';
     EncryptService,
     LocalStrategy,
     JwtStrategy,
+    JwtRefreshStrategy,
     LocalAuthGuard,
+    JwtRefreshGuard,
   ],
   imports: [
     UsersModule,

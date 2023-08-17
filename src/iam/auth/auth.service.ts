@@ -53,10 +53,43 @@ export class AuthService {
 
   async signin(request: Request) {
     const user = request['user'] as UserEntity;
-    const accessToken = await this.jwtService.signAsync({
-      sub: user.id,
-      email: user.email,
+    const accessToken = await this.signToken(
+      user,
+      this.JwtCofnig.accessTokenTTL,
+    );
+    const refreshToken = await this.signToken(
+      user,
+      this.JwtCofnig.refreshTokenTtl,
+    );
+
+    await this.usersService.update(user.id, {
+      refreshToken: await this.hashService.hashNonDeterministic(refreshToken),
     });
+
+    request.res.setHeader('Set-Cookie', [
+      `accessToken=${accessToken}; HttpOnly; Path=/; Max-Age=${this.JwtCofnig.accessTokenTTL}`,
+      `refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.JwtCofnig.refreshTokenTtl}`,
+    ]);
+
+    return user;
+  }
+
+  private async signToken(payload: UserEntity, expiresIn: number) {
+    return await this.jwtService.signAsync(
+      {
+        sub: payload?.id,
+        email: payload?.email,
+      },
+      { expiresIn },
+    );
+  }
+
+  async refresh(request: Request) {
+    const user = request['user'] as UserEntity;
+    const accessToken = await this.signToken(
+      user,
+      this.JwtCofnig.accessTokenTTL,
+    );
 
     request.res.setHeader(
       'Set-Cookie',
@@ -67,9 +100,9 @@ export class AuthService {
   }
 
   async signout(request: Request) {
-    request.res.setHeader(
-      'Set-Cookie',
+    request.res.setHeader('Set-Cookie', [
       `accessToken=; HttpOnly; Path=/; Max-Age=0`,
-    );
+      `refresh=; HttpOnly; Path=/; Max-Age=0`,
+    ]);
   }
 }

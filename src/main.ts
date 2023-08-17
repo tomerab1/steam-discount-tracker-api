@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { SerializeInterceptor } from './common/interceptors/serialize.interceptor';
 import { UserEntity } from './users/entity/user.entity';
 import { ValidationPipe } from '@nestjs/common';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,7 @@ async function bootstrap() {
     }),
   );
 
+  app.use(cookieParser());
   app.enableShutdownHooks();
   app.setGlobalPrefix(API_PREFIX);
   app.useGlobalInterceptors(new SerializeInterceptor(UserEntity));

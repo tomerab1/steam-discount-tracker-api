@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req: Request) => {
-          return req?.headers?.cookie?.split('=')[1];
+          return req?.cookies?.accessToken;
         },
       ]),
       ignoreExpiration: false,
@@ -27,7 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(tokenDto: TokenDto) {
-    const user = await this.usersService.findOne(tokenDto.userid);
+    const user = await this.usersService.findOne(tokenDto.sub);
     if (!user) throw new UnauthorizedException();
     return user;
   }

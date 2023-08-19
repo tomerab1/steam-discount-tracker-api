@@ -6,6 +6,7 @@ import { SerializeInterceptor } from './common/interceptors/serialize.intercepto
 import { UserEntity } from './users/entity/user.entity';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
+import { PerformanceInterceptor } from './common/interceptors/performance.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,8 +23,12 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableShutdownHooks();
+  app.enableCors();
   app.setGlobalPrefix(API_PREFIX);
-  app.useGlobalInterceptors(new SerializeInterceptor(UserEntity));
+  app.useGlobalInterceptors(
+    new SerializeInterceptor(UserEntity),
+    new PerformanceInterceptor(),
+  );
 
   const configService = app.get<ConfigService>(ConfigService);
 

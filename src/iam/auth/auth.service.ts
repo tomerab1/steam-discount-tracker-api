@@ -71,7 +71,7 @@ export class AuthService {
       `refresh=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.JwtCofnig.refreshTokenTtl}`,
     ]);
 
-    return user;
+    return await this.usersService.findOne(user.id);
   }
 
   private async signToken(payload: UserEntity, expiresIn: number) {

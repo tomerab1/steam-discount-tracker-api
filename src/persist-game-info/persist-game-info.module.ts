@@ -10,6 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       useFactory: async (configService: ConfigService) => {
         Logger.debug('[!] Initializing Elasticsearch...');
         return {
+          maxRetries: configService.get<number>('MAX_RETRIES'),
           node: configService.get('ELASTICSEARCH_NODE'),
           auth: {
             username: configService.get('ELASTICSEARCH_USERNAME'),

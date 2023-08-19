@@ -1,8 +1,8 @@
 import { Logger, Module } from '@nestjs/common';
 import { CacheService } from './cache.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { createClient, RedisClientType } from 'redis';
-import { REDIS_CLIENT, RETRY_INTERVAL } from './constants';
+import { createClient } from 'redis';
+import { REDIS_CLIENT } from './constants';
 import { retryStrategy } from './retry.strategy';
 
 @Module({
@@ -12,7 +12,7 @@ import { retryStrategy } from './retry.strategy';
     {
       provide: REDIS_CLIENT,
       useFactory: async (configService: ConfigService) => {
-        Logger.debug('[!] Initializing redis');
+        Logger.debug('[!] Initializing redis...');
         return createClient({
           socket: {
             reconnectStrategy: retryStrategy,

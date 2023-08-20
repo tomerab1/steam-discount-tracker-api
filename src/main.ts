@@ -23,7 +23,10 @@ async function bootstrap() {
 
   app.use(cookieParser());
   app.enableShutdownHooks();
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  });
   app.setGlobalPrefix(API_PREFIX);
   app.useGlobalInterceptors(
     new SerializeInterceptor(UserEntity),
